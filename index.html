@@ -41,10 +41,21 @@
     backdrop-filter:blur(10px);
     background:rgba(10,13,24,0.75);
     border-bottom:1px solid var(--border);
+    gap:1rem;
   }
-  nav.topnav .brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.15rem;color:var(--blue);}
-  nav.topnav .links a{margin-left:2.1rem;text-decoration:none;color:var(--text-muted);font-size:0.95rem;font-weight:500;transition:color .2s;}
+  nav.topnav .brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.15rem;color:var(--blue);flex:0 0 auto;}
+  nav.topnav .links{display:flex;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;}
+  nav.topnav .links::-webkit-scrollbar{display:none;}
+  nav.topnav .links a{margin-left:2.1rem;text-decoration:none;color:var(--text-muted);font-size:0.95rem;font-weight:500;transition:color .2s;white-space:nowrap;}
+  nav.topnav .links a:first-child{margin-left:0;}
   nav.topnav .links a:hover{color:var(--text);}
+  .menu-toggle{
+    display:none;
+    background:none;border:none;cursor:pointer;
+    color:var(--text);padding:0.3rem;
+    align-items:center;justify-content:center;
+  }
+  .menu-toggle svg{width:24px;height:24px;}
 
   /* ---------- HERO ---------- */
   header.hero{position:relative;min-height:88vh;display:flex;align-items:center;overflow:hidden;border-bottom:1px solid var(--border);}
@@ -73,20 +84,18 @@
   }
   .hero-photo img{width:100%;height:100%;object-fit:cover;display:block;}
   @media(max-width:760px){
-    .hero-inner{flex-direction:column;text-align:left;}
-    .hero-photo-wrap{width:220px;height:220px;}
+    .hero-inner{flex-direction:column;align-items:flex-start;text-align:left;}
+    .hero-text{width:100%;}
+    .hero-photo-wrap{width:220px;height:220px;align-self:flex-start;}
     .hero-photo{width:170px;height:170px;}
     .hero-photo-wrap .glow-orb{width:260px;height:260px;}
   }
   .badge{
-    display:inline-block;
-    border:1px solid rgba(91,124,250,0.4);
-    background:rgba(91,124,250,0.08);
+    display:block;
     color:var(--blue);
-    font-size:0.9rem;font-weight:500;
-    padding:0.5rem 1.1rem;
-    border-radius:999px;
-    margin-bottom:1.6rem;
+    font-size:0.9rem;font-weight:600;
+    text-transform:uppercase;letter-spacing:0.04em;
+    margin-bottom:1rem;
   }
   .hero-text h1{
     font-size:clamp(2rem,4.5vw,3rem);
@@ -111,12 +120,10 @@
   section{padding:5.5rem 0;}
   .section-head{margin-bottom:2.7rem;}
   .section-head .tag{
-    display:inline-block;
-    color:var(--blue);font-size:0.9rem;font-weight:500;
-    border:1px solid rgba(91,124,250,0.4);
-    background:rgba(91,124,250,0.08);
-    padding:0.35rem 0.9rem;border-radius:999px;
-    margin-bottom:0.9rem;
+    display:block;
+    color:var(--blue);font-size:0.9rem;font-weight:600;
+    text-transform:uppercase;letter-spacing:0.04em;
+    margin-bottom:0.6rem;
   }
   .section-head h2{font-size:1.9rem;font-weight:700;}
   section.alt{background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
@@ -188,19 +195,63 @@
   .btn-mail:hover{background:#7C97FF;}
 
   footer{padding:2.5rem 0;text-align:center;color:var(--text-muted);font-size:0.85rem;}
+
+  /* ---------- MOBILE ---------- */
+  @media(max-width:600px){
+    body{font-size:16px;}
+    .wrap{padding:0 1.25rem;}
+    nav.topnav{padding:1rem 1.25rem;}
+    nav.topnav .brand{font-size:1rem;}
+    .menu-toggle{display:flex;}
+    nav.topnav .links{
+      display:none;
+      position:absolute;
+      top:100%;left:0;right:0;
+      flex-direction:column;
+      background:var(--bg-2);
+      border-bottom:1px solid var(--border);
+      padding:0.5rem 1.25rem 1.25rem;
+      overflow-x:visible;
+    }
+    nav.topnav .links.open{display:flex;}
+    nav.topnav .links a{margin-left:0;font-size:1.05rem;padding:0.75rem 0;border-bottom:1px solid var(--border);}
+    nav.topnav .links a:last-child{border-bottom:none;}
+
+    header.hero{min-height:auto;padding-top:1rem;}
+    .hero-inner{padding:2rem 0;gap:2rem;}
+    .badge{font-size:0.8rem;padding:0.4rem 0.9rem;margin-bottom:1.2rem;}
+    .hero-text .role{font-size:1.02rem;margin-bottom:1.6rem;}
+    .hero-cta{display:flex;flex-direction:column;gap:0.8rem;}
+    .hero-cta a{margin-right:0;width:100%;text-align:center;}
+
+    section{padding:3.2rem 0;}
+    .section-head{margin-bottom:1.8rem;}
+    .section-head h2{font-size:1.5rem;}
+    .about-text{font-size:1rem;}
+
+    .project-card{padding:1.5rem 1.4rem;}
+    .project-card h3{font-size:1.12rem;}
+    .project-card p{font-size:0.95rem;}
+
+    .contact-band{flex-direction:column;align-items:flex-start;}
+    .btn-mail{width:100%;justify-content:center;}
+  }
 </style>
 </head>
 <body>
 
   <nav class="topnav">
     <span class="brand">Ulrich.dev</span>
-    <span class="links">
+    <span class="links" id="navLinks">
       <a href="#accueil">Accueil</a>
       <a href="#apropos">À propos</a>
       <a href="#competences">Compétences</a>
       <a href="#projets">Projets</a>
       <a href="#contact">Contact</a>
     </span>
+    <button class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
   </nav>
 
   <header class="hero" id="accueil">
@@ -334,6 +385,20 @@
   </footer>
 
   <script>
+    // Menu hamburger mobile
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', isOpen);
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
     // Animation des barres de compétences à l'apparition
     const bars = document.querySelectorAll('.bar span');
     const io = new IntersectionObserver((entries)=>{
